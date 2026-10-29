@@ -17,8 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from app1.views import main_func
+from app1.views import products_func
+from app1 import views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('main/', main_func)
+    path('main/', main_func),
+    path('products/', products_func),
+    path('', views.main_page, name='main'),
+    path('main/products/', views.products_page, name='products'),
+    path('cart/', views.cart, name='cart'),
+    path('add-to-cart/', views.add_to_cart, name='add_to_cart'),
 ]

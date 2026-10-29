@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Корзина — TechStore</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/cart.css' %}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <a href="{% url 'main' %}" class="logo">TechStore</a>
+            <nav class="main-nav">
+                <a href="{% url 'main' %}" class="btn-back">← На главную</a>
+                <a href="{% url 'products' %}">Каталог</a>
+                <a href="#">Контакты</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <h2>Ваша корзина</h2>
+            
+            {% if cart_items %}
+            <ul class="cart-list">
+              {% for item in cart_items %}
+                <li class="cart-item">
+                  <span class="cart-item-name">{{ item }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+          
+            <div class="cart-total">
+              Итого товаров: {{ cart_items|length }}
+            </div>
+          
+            <button class="checkout-btn" onclick="alert('Здесь будет оформление заказа!')">
+              Оформить заказ
+            </button>
+          {% else %}
+            <p class="empty-cart-message">Корзина пуста. Добавьте товары из каталога!</p>
+          {% endif %}
+          
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 TechStore</p>
+        </div>
+    </footer>
+</body>
+</html>

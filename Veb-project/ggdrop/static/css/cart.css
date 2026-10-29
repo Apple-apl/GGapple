@@ -1,0 +1,159 @@
+/* static/css/cart.css */
+
+:root {
+    --primary-color: #2c3e50;       /* Тёмно-синий — основной */
+    --accent-color: #e74c3c;        /* Красный — акцент */
+    --bg-color: #f9f9f9;            /* Светло-серый фон страницы */
+    --card-bg: #ffffff;             /* Белый фон блоков */
+    --text-color: #333333;         /* Тёмный текст */
+    --border-color: #dddddd;        /* Цвет рамок */
+  }
+  
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+  }
+  
+  .container {
+    max-width: 800px;               /* Корзина уже, чем каталог — так удобнее читать список */
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+  
+  /* Шапка — точно как на других страницах */
+  .site-header {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    padding: 1rem 0;
+  }
+  
+  .site-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.5rem;
+  }
+  
+  .main-nav {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+  
+  .main-nav a {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+  }
+  
+  .main-nav a:hover {
+    color: #ffffff;
+  }
+  
+  /* Основной контент корзины */
+  .main-content {
+    padding: 2rem 0;
+  }
+  
+  h2 {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  /* Список товаров — аккуратный, с разделителями */
+  .cart-list {
+    list-style: none;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .cart-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .cart-item:last-child {
+    border-bottom: none;
+  }
+  
+  .cart-item-name {
+    font-size: 1rem;
+    color: var(--text-color);
+  }
+  
+  /* Итого */
+  .cart-total {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--primary-color);
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    text-align: right;
+  }
+  
+  /* Кнопка оформления заказа */
+  .checkout-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--accent-color); /* Красный акцент */
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 1.5rem;
+  }
+  
+  .checkout-btn:hover {
+    background-color: #c0392b;
+  }
+  
+  /* Сообщение, если корзина пуста */
+  .empty-cart-message {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #666;
+    font-size: 1.1rem;
+  }
+  
+  /* Подвал — как везде */
+  .site-footer {
+    background-color: var(--primary-color);
+    color: rgba(255, 255, 255, 0.85);
+    padding: 2rem 0;
+    margin-top: 3rem;
+  }
+  
+  .site-footer .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  
+  .site-footer p {
+    font-size: 0.9rem;
+  }
+  
