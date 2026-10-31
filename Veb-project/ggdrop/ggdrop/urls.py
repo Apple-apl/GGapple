@@ -17,16 +17,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from app1.views import main_func
-from app1.views import products_func
 from app1 import views
-
+from django.utils import timezone
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('main/', main_func),
-    path('products/', products_func),
+    path('admin/', admin.site.urls),
     path('', views.main_page, name='main'),
-    path('main/products/', views.products_page, name='products'),
+    path('products/', views.products_page, name='products'),
     path('cart/', views.cart, name='cart'),
     path('add-to-cart/', views.add_to_cart, name='add_to_cart'),
+    path('remove-from-cart/<str:product_name>/', views.remove_from_cart, name='remove_from_cart'),
+    path('clear-cart/', views.clear_cart, name='clear_cart'),
+    path('contacts/', views.contacts, name='contacts'),
+    path('checkout/', views.checkout, name='checkout'),
+    path('orders/', views.orders, name='orders'),
+    path('orders/<str:order_number>/cancel/', views.cancel_order, name='cancel_order'),
 ]

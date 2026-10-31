@@ -1,12 +1,12 @@
 /* static/css/cart.css */
 
 :root {
-    --primary-color: #2c3e50;       /* Тёмно-синий — основной */
-    --accent-color: #e74c3c;        /* Красный — акцент */
-    --bg-color: #f9f9f9;            /* Светло-серый фон страницы */
-    --card-bg: #ffffff;             /* Белый фон блоков */
-    --text-color: #333333;         /* Тёмный текст */
-    --border-color: #dddddd;        /* Цвет рамок */
+    --primary-color: #2c3e50;   
+    --accent-color: #e74c3c;        
+    --bg-color: #f9f9f9;            
+    --card-bg: #ffffff;           
+    --text-color: #333333;
+    --border-color: #dddddd;
   }
   
   * {
@@ -157,3 +157,28 @@
     font-size: 0.9rem;
   }
   
+  .btn-remove {
+    background: none;
+    border: none;
+    color: #e74c3c;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0 8px;
+    line-height: 1;
+}
+
+.btn-remove:hover {
+    color: #c0392b;
+    transform: scale(1.1);
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+.cart-item:last-child {
+  border-bottom: none;
+}

@@ -1,0 +1,152 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Заказы — TechStore</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/orders.css' %}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <a href="{% url 'main' %}" class="logo">TechStore</a>
+            <nav class="main-nav">
+                <a href="{% url 'main' %}"> <-- На главную</a>
+                <a href="{% url 'products' %}">Каталог</a>
+                <a href="{% url 'cart' %}">
+                    Корзина
+                    (<span id="cart-count">
+                        {% if request.session.cart %}
+                            {{ request.session.cart|length }}
+                        {% else %}
+                            0
+                        {% endif %}
+                    </span>)
+                </a>
+                <a href="{% url 'contacts' %}">Контакты</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <h2>Мои заказы</h2>
+
+            {% if orders %}
+                {% for order in orders %}
+                <div class="order-card">
+                    <div class="order-header">
+                        <div>
+                            <span class="order-number">Заказ {{ order.number }}</span>
+                            <span class="order-date">{{ order.date }}</span>
+                        </div>
+                        <span class="order-status">В сборке</span>
+                    </div>
+
+                    <ul class="order-items">
+                        {% for item in order.items %}
+                        <li>
+                            <span>{{ item.name }} × {{ item.qty }}</span>
+                            <span class="order-item-price">{{ item.price|intcomma }} ₽</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+
+                    <div class="order-total">
+                        Итого: <strong>{{ order.total|intcomma }} ₽</strong>
+                    </div>
+
+                    {% if order.number %}
+                    <form action="{% url 'cancel_order' order.number %}" method="post" class="cancel-form">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-cancel"
+{% if order.number %}
+<form action="{% url 'cancel_order' order.number %}" method="post"
+      data-order-number="{{ order.number }}">
+    {% csrf_token %}
+    <button type="button" class="btn-cancel">Отменить заказ</button>
+</form>
+{% endif %}
+
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="empty-orders">
+                    У вас пока нет заказов. Загляните в <a href="{% url 'products' %}">каталог</a>!
+                </p>
+            {% endif %}
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 TechStore. Все права защищены.</p>
+        </div>
+    </footer>
+    <!-- Модальное окно отмены -->
+<div class="modal-overlay" id="cancel-modal" hidden>
+    <div class="modal-card">
+        <div class="modal-icon">🛒</div>
+        <h3>Отменить этот заказ?</h3>
+        <p class="modal-order-name" id="modal-order-name"></p>
+        <p class="modal-note">Заказ будет удалён безвозвратно. Товары в корзину не вернутся.</p>
+        <div class="modal-actions">
+            <button type="button" class="btn-modal btn-modal-cancel" id="modal-confirm">Да, отменить</button>
+            <button type="button" class="btn-modal btn-modal-back" id="modal-close">Вернуться</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const modal = document.getElementById('cancel-modal');
+    const modalOrderName = document.getElementById('modal-order-name');
+    const btnConfirm = document.getElementById('modal-confirm');
+    const btnClose = document.getElementById('modal-close');
+    let activeForm = null;
+
+    function openModal(form) {
+        activeForm = form;
+        if (modalOrderName) modalOrderName.textContent = 'Заказ ' + form.dataset.orderNumber;
+        modal.hidden = false;
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        modal.hidden = true;
+        document.body.style.overflow = '';
+        activeForm = null;
+    }
+
+    // Вешаем открытие на все кнопки отмены
+    document.querySelectorAll('.btn-cancel').forEach(btn => {
+        btn.addEventListener('click', () => {
+            openModal(btn.closest('form'));
+        });
+    });
+
+    if (btnClose) btnClose.addEventListener('click', closeModal);
+
+    if (btnConfirm) {
+        btnConfirm.addEventListener('click', () => {
+            if (activeForm) activeForm.submit();
+            closeModal();
+        });
+    }
+
+    // Клик по тёмному фону закрывает окно
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.hidden) closeModal();
+    });
+</script>
+
+</body>
+</html>

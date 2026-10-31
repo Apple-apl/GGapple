@@ -1,0 +1,292 @@
+/* ============================================
+   TechStore — страница заказов
+   Палитра: #2c3e50, #e74c3c
+   ============================================ */
+
+.main-content h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #2c3e50;
+    margin: 0 0 24px;
+}
+
+.main-content h2::after {
+    content: "";
+    display: block;
+    width: 64px;
+    height: 4px;
+    background: linear-gradient(90deg, #2c3e50, #e74c3c);
+    border-radius: 2px;
+    margin-top: 8px;
+}
+
+/* Зелёная плашка успеха */
+
+.order-success {
+    background: #eafaf0;
+    border: 1px solid #b8e6c8;
+    color: #1e7d47;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    font-weight: 600;
+    animation: fade-in 0.4s ease both;
+}
+
+/* Карточка заказа */
+
+.order-card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.order-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px rgba(44, 62, 80, 0.12);
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 12px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid #eceff1;
+}
+
+.order-number {
+    font-weight: 700;
+    color: #2c3e50;
+    margin-right: 12px;
+}
+
+.order-date {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+
+.order-status {
+    background: #fdf1f0;
+    color: #e74c3c;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 999px;
+}
+
+.order-items {
+    list-style: none;
+    margin: 0 0 14px;
+    padding: 0;
+}
+
+.order-items li {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px 0;
+    color: #55616b;
+    border-bottom: 1px dashed #eceff1;
+}
+
+.order-items li:last-child {
+    border-bottom: none;
+}
+
+.order-item-price {
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.order-total {
+    text-align: right;
+    padding-top: 12px;
+    border-top: 2px solid #e74c3c;
+    color: #2c3e50;
+}
+
+.order-total strong {
+    color: #e74c3c;
+    font-size: 1.15rem;
+}
+
+/* Пустой список */
+
+.empty-orders {
+    color: #7f8c8d;
+    font-size: 1.05rem;
+    background: #ffffff;
+    border: 1px dashed #d0d7dd;
+    border-radius: 12px;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.empty-orders a {
+    color: #e74c3c;
+    font-weight: 600;
+}
+
+/* Анимация */
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== Отмена заказа ===== */
+
+.cancel-form {
+    margin-top: 14px;
+    text-align: right;
+}
+
+.btn-cancel {
+    padding: 8px 18px;
+    background: transparent;
+    color: #e74c3c;
+    border: 1px solid #e74c3c;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.btn-cancel:hover {
+    background: #e74c3c;
+    color: #ffffff;
+}
+
+.cancel-form {
+    margin-top: 14px;
+    text-align: right;
+}
+
+.btn-cancel {
+    padding: 8px 18px;
+    background: transparent;
+    color: #e74c3c;
+    border: 1px solid #e74c3c;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.btn-cancel:hover {
+    background: #e74c3c;
+    color: #ffffff;
+}
+
+/* ===== Модальное окно отмены ===== */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(28, 40, 51, 0.7);
+    backdrop-filter: blur(3px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    animation: fade-in 0.2s ease both;
+}
+
+.modal-overlay[hidden] {
+    display: none;
+}
+
+.modal-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 32px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+    animation: modal-pop 0.25s ease both;
+}
+
+@keyframes modal-pop {
+    from {
+        opacity: 0;
+        transform: scale(0.92) translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal-icon {
+    font-size: 2.4rem;
+    margin-bottom: 10px;
+}
+
+.modal-card h3 {
+    color: #2c3e50;
+    font-size: 1.3rem;
+    margin: 0 0 8px;
+}
+
+.modal-order-name {
+    color: #e74c3c;
+    font-weight: 700;
+    margin: 0 0 6px;
+}
+
+.modal-note {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    margin: 0 0 20px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.btn-modal {
+    padding: 11px 22px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    border: none;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.btn-modal:active {
+    transform: scale(0.97);
+}
+
+.btn-modal-cancel {
+    background: #e74c3c;
+    color: #ffffff;
+}
+
+.btn-modal-cancel:hover {
+    background: #c0392b;
+}
+
+.btn-modal-back {
+    background: transparent;
+    color: #2c3e50;
+    border: 1px solid #d0d7dd;
+}
+
+.btn-modal-back:hover {
+    border-color: #2c3e50;
+}

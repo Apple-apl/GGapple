@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,9 +13,10 @@
         <div class="container">
             <a href="{% url 'main' %}" class="logo">TechStore</a>
             <nav class="main-nav">
-                <a href="{% url 'main' %}" class="btn-back">← На главную</a>
+                <a href="{% url 'main' %}"> <-- На главную</a>
                 <a href="{% url 'products' %}">Каталог</a>
-                <a href="#">Контакты</a>
+                <a href="{% url 'contacts' %}">Контакты</a>
+                <a href="{% url 'orders' %}">Заказы</a>
             </nav>
         </div>
     </header>
@@ -22,27 +24,46 @@
     <main class="main-content">
         <div class="container">
             <h2>Ваша корзина</h2>
-            
-            {% if cart_items %}
-            <ul class="cart-list">
-              {% for item in cart_items %}
-                <li class="cart-item">
-                  <span class="cart-item-name">{{ item }}</span>
-                </li>
-              {% endfor %}
-            </ul>
-          
-            <div class="cart-total">
-              Итого товаров: {{ cart_items|length }}
-            </div>
-          
-            <button class="checkout-btn" onclick="alert('Здесь будет оформление заказа!')">
-              Оформить заказ
-            </button>
-          {% else %}
-            <p class="empty-cart-message">Корзина пуста. Добавьте товары из каталога!</p>
-          {% endif %}
-          
+
+            {% if cart_data %}
+                <!-- Кнопка очистки всей корзины -->
+                <form action="{% url 'clear_cart' %}" method="post" style="margin-bottom: 1rem;">
+                    {% csrf_token %}
+                    <button type="submit" class="checkout-btn" style="background-color: #7f8c8d; width: auto; padding: 8px 16px;">
+                        Очистить корзину
+                    </button>
+                </form>
+
+                <ul class="cart-list">
+                  {% for name, data in cart_data.items %}
+                    <li class="cart-item">
+                        <div style="flex:1; display:flex; justify-content:space-between; align-items:center;">
+                            <span class="cart-item-name" style="font-weight:600;">{{ name }}</span>
+                            <span style="color:var(--primary-color); font-size:1.1rem;">
+                              {{ data.price|intcomma }} ₽ × {{ data.qty }}
+                            </span>
+                        </div>
+
+                        <!-- Удаление одного товара -->
+                        <form action="{% url 'remove_from_cart' name %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-remove" title="Удалить товар">×</button>
+                        </form>
+                    </li>
+                  {% endfor %}
+                </ul>
+
+                <div class="cart-total" style="text-align:right; margin-top:1rem;">
+                    Итого: <strong>{{ total|intcomma }} ₽</strong>
+                </div>
+
+                <form action="{% url 'checkout' %}" method="post" style="margin-top:1rem; text-align:right;">
+                    {% csrf_token %}
+                    <button type="submit" class="checkout-btn">Оформить заказ</button>
+                </form>
+            {% else %}
+                <p class="empty-cart-message">Корзина пуста. Добавьте товары из каталога!</p>
+            {% endif %}
         </div>
     </main>
 

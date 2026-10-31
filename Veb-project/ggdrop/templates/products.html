@@ -1,10 +1,10 @@
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Каталог — TechCO</title>
+    <title>Каталог — TechStore</title>
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <link rel="stylesheet" href="{% static 'css/products.css' %}">
 </head>
@@ -13,89 +13,50 @@
         <div class="container">
             <a href="{% url 'main' %}" class="logo">TechStore</a>
             <nav class="main-nav">
-                <a href="{% url 'main' %}" class="btn-back">← На главную</a>
-                <a href="{% url 'products' %}">Каталог</a>
-                <!-- Ссылка на корзину: передаем количество товаров, если есть -->
-                <a href="{% url 'cart' %}">Корзина (<span id="cart-count">0</span>)</a>
-                <a href="#">Контакты</a>
+                <a href="{% url 'main' %}"> <-- На главную</a>
+                <a href="{% url 'cart' %}">
+                    Корзина
+                    (<span id="cart-count">
+                        {% if request.session.cart %}
+                            {{ request.session.cart|length }}
+                        {% else %}
+                            0
+                        {% endif %}
+                    </span>)
+                </a>
+                <a href="{% url 'contacts' %}">Контакты</a>
+                <a href="{% url 'orders' %}">Заказы</a>
             </nav>
         </div>
     </header>
 
     <main class="main-content">
-        <section class="products-section">
-            <div class="container">
-                <h2>Все товары</h2>
+        <div class="container">
+            <h2>Каталог товаров</h2>
 
-                <!-- Блок Комплектующие -->
-                <section class="category-block">
-                    <h3>Комплектующие</h3>
-                    <div class="category-popular-list">
-                        <!-- Карточка товара 1 -->
-                        <div class="product-card">
-                            <div class="product-name">Ryzen 7 7700X</div>
-                            <!-- Кнопка добавления: скрыта по умолчанию, появляется при наведении -->
-                            <form action="{% url 'add_to_cart' %}" method="POST" class="add-to-cart-form">
-                                {% csrf_token %}
-                                <input type="hidden" name="product_name" value="Ryzen 7 7700X">
-                                <button type="submit" class="btn-add-cart">Добавить в корзину</button>
-                            </form>
-                        </div>
+            {% for category, items in products_catalog.items %}
+            <section class="category-block">
+                <h3>{{ category }}</h3>
+                <div class="category-popular-list">
 
-                        <!-- Карточка товара 2 -->
-                        <div class="product-card">
-                            <div class="product-name">RTX 4070 Ti</div>
-                            <form action="{% url 'add_to_cart' %}" method="POST" class="add-to-cart-form">
-                                {% csrf_token %}
-                                <input type="hidden" name="product_name" value="RTX 4070 Ti">
-                                <button type="submit" class="btn-add-cart">Добавить в корзину</button>
-                            </form>
-                        </div>
+                    {% for name, price in items.items %}
+                    <div class="product-card">
+                        <span class="product-number">{{ forloop.counter }}.</span>
+                        <div class="product-name">{{ name }}</div>
+                        <div class="product-price">{{ price|intcomma }} ₽</div>
 
-                        <div class="product-card">
-                            <div class="product-name">SSD 1TB NVMe</div>
-                            <form action="{% url 'add_to_cart' %}" method="POST" class="add-to-cart-form">
-                                {% csrf_token %}
-                                <input type="hidden" name="product_name" value="SSD 1TB NVMe">
-                                <button type="submit" class="btn-add-cart">Добавить в корзину</button>
-                            </form>
-                        </div>
-
-                        <div class="product-card">
-                            <div class="product-name">DDR5 32GB</div>
-                            <form action="{% url 'add_to_cart' %}" method="POST" class="add-to-cart-form">
-                                {% csrf_token %}
-                                <input type="hidden" name="product_name" value="DDR5 32GB">
-                                <button type="submit" class="btn-add-cart">Добавить в корзину</button>
-                            </form>
-                        </div>
+                        <form action="{% url 'add_to_cart' %}" method="POST" class="add-to-cart-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="product_name" value="{{ name }}">
+                            <button type="submit" class="btn-add-cart">Добавить в корзину</button>
+                        </form>
                     </div>
-                </section>
+                    {% endfor %}
 
-                <!-- Блок Ноутбуки -->
-                <section class="category-block">
-                    <h3>Ноутбуки</h3>
-                    <div class="category-popular-list">
-                        <div class="product-card">
-                            <div class="product-name">Ноутбук X1 Pro</div>
-                            <form action="{% url 'add_to_cart' %}" method="POST" class="add-to-cart-form">
-                                {% csrf_token %}
-                                <input type="hidden" name="product_name" value="Ноутбук X1 Pro">
-                                <button type="submit" class="btn-add-cart">Добавить в корзину</button>
-                            </form>
-                        </div>
-                        <div class="product-card">
-                            <div class="product-name">Gaming M1 Ultra</div>
-                            <form action="{% url 'add_to_cart' %}" method="POST" class="add-to-cart-form">
-                                {% csrf_token %}
-                                <input type="hidden" name="product_name" value="Gaming M1 Ultra">
-                                <button type="submit" class="btn-add-cart">Добавить в корзину</button>
-                            </form>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </section>
+                </div>
+            </section>
+            {% endfor %}
+        </div>
     </main>
 
     <footer class="site-footer">
